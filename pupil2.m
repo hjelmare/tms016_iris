@@ -10,37 +10,21 @@ A(A>0.75) = 0;
 A(A<0.25) = 0;
 A = gaussfilt(A,5,10);
 
-
-%Circle parameters
-rmax = 70;
-rmin = 30;
-dr=2;
-nbr_circles = (rmax - rmin)/dr + 1;
-
+%Plotting image
 figure
 imshow(B);
 hold on
 
-%Image sweep parameters
-dpix = 2;
-xmin = 160;
+%Circle parameters
+rmax = 70;
+rmin = 30;
+xmin = 130;
 xmax = 200;
-ymin = 130;
+ymin = 110;
 ymax = 180;
-npix = ceil((xmax-xmin)*(ymax-ymin)/dpix);
-centermax = zeros(npix,4);
 
-iCent = 1;
-for ix = xmin:dpix:xmax
-    for iy = ymin:dpix:ymax
-        centermax(iCent,:) = cedgefinder(ix,iy,rmin,rmax,dr,nbr_circles,A);
-        iCent = iCent + 1;
-    end
-end
-
-%Finding highest derivative
-[~,nbr] = max(centermax(:,1));
-centermax = centermax(nbr,2:4);
+%Finding pupil inside search area
+centermax = cedgefinder2([xmin,xmax],[ymin,ymax],rmin,rmax,A);
 
 %Plotting found circle
 nbr_points = 360;
