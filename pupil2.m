@@ -3,12 +3,10 @@ clear;
 clc;
 
 %Fetching image and processing
-B = importdata('S1249R02.jpg');
+B = importdata('eyeSmallPupil.jpg');
 A = B;
 A = im2double(A);
-A(A>0.75) = 0;
-A(A<0.25) = 0;
-A = gaussfilt(A,5,10);
+
 
 %Plotting image
 figure
@@ -18,13 +16,10 @@ hold on
 %Circle parameters
 rmax = 70;
 rmin = 30;
-xmin = 130;
-xmax = 200;
-ymin = 110;
-ymax = 180;
+[x, y] = GetPupilLocation(A);
 
 %Finding pupil inside search area
-centermax = cedgefinder2([xmin,xmax],[ymin,ymax],rmin,rmax,A);
+centermax = cedgefinder(x,y,rmin,rmax,A);
 
 %Plotting found circle
 nbr_points = 360;

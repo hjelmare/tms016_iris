@@ -57,8 +57,9 @@ for iRow = rowStart:5:rowStop
     end
 end
 
-xBoundary = [colCenter-boxLength/2, colCenter+boxLength/2];
-yBoundary = [rowCenter-boxLength/2, rowCenter+boxLength/2];
+indrag = 10;
+xBoundary = [colCenter-boxLength/2+indrag, colCenter+boxLength/2-indrag];
+yBoundary = [rowCenter-boxLength/2+indrag, rowCenter+boxLength/2-indrag];
 
 
 end
