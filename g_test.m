@@ -4,27 +4,37 @@ clf;
 
 iris_path = '../Iris/';
 files = dir(iris_path);
-iFile = 7;
+iFile = 11;
 fFile = [iris_path files(iFile).name];
 
 A = imread(fFile);
+A = im2double(A);
+%A = (filter2(fspecial('gaussian',10,5),A));
 
-center = [184,124];
 
-rMax = 80;
-rMin = 40;
+rPupil = 32;
+rIris = 100;         % Must not be smaller than rPupil
+center = [180,162];
+maxDev = 3;
+angularBuffer = 0.15;
 
-rRes = 200;
-phiRes = 720;
-res = [rRes, phiRes];
+mask = eyelidfinder(center(2), center(1), rPupil,rIris,maxDev, angularBuffer,A);
 
-imUnwrapped = unwrap(A,rMin, rMax, center, res);
-imUnwrapped = imUnwrapped .* (1/255);
+xPupil = center(2) + rPupil*cos(0:0.01:2*pi);
+yPupil = center(1) + rPupil*sin(0:0.01:2*pi);
 
-subplot(2,1,1)
-hold on
+xIris = center(2) + rIris*cos(0:0.01:2*pi);
+yIris = center(1) + rIris*sin(0:0.01:2*pi);
+
+mask(mask==0) = 0.25;
+subplot(1,2,1)
+imshow(immultiply(mask,A))
+
+subplot(1,2,2)
 imshow(A)
+hold on
 plot(center(2),center(1),'rx')
+plot(xPupil,yPupil,'b')
+plot(xIris,yIris,'g')
 hold off
-subplot(2,1,2)
-imshow(imUnwrapped)
+
