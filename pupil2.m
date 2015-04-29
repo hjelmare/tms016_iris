@@ -3,10 +3,9 @@ clear;
 clc;
 
 %Fetching image and processing
-B = importdata('eyeSmallPupil.jpg');
+B = importdata('S1249R02.jpg');
 A = B;
 A = im2double(A);
-
 
 %Plotting image
 figure
@@ -22,15 +21,9 @@ rmin = 30;
 centermax = cedgefinder(x,y,rmin,rmax,A);
 
 %Plotting found circle
-nbr_points = 360;
-dPhi = 2*pi/nbr_points;
-circle = zeros(nbr_points,2);
-for iPhi = 1:nbr_points
-        phi = iPhi * dPhi;
-        circle(iPhi,2) = centermax(2) + round(centermax(3)*cos(phi));
-        circle(iPhi,1) = centermax(1) + round(centermax(3)*sin(phi));
-end
+plotcircle(centermax(1),centermax(2),centermax(3));
 
-plot(circle(:,1),circle(:,2),'b')
-plot(centermax(1),centermax(2),'rx')
+[x0,y0,r] = iris(A,centermax(1),centermax(2),centermax(3));
+
+plotcircle(x0,y0,r)
 

@@ -1,4 +1,4 @@
-function centermax = cedgefinder2(searchx,searchy,rmin,rmax,Im)
+function centermax = cedgefinder(searchx,searchy,rmin,rmax,Im)
 
 %Declaration of variables
 dr=1;
