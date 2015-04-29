@@ -20,11 +20,9 @@ res = [rRes, phiRes];
 
 imUnwrapped = unwrap(A,rMin, rMax, center, res);
 imUnwrapped = imUnwrapped .* (1/255);
+%imUnwrapped = raiseContrast(imUnwrapped, 0.00000000001);
 
 subplot(2,1,1)
-hold on
-imshow(A)
-plot(center(2),center(1),'rx')
-hold off
+imhist(imUnwrapped)
 subplot(2,1,2)
 imshow(imUnwrapped)
