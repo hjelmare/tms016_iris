@@ -4,17 +4,31 @@ clf;
 
 iris_path = '../Iris/';
 files = dir(iris_path);
-iFile = 11;
+
+for i = 3:13
+    
+iFile = i;
 fFile = [iris_path files(iFile).name];
 
 A = imread(fFile);
 A = im2double(A);
-%A = (filter2(fspecial('gaussian',10,5),A));
-
 
 rPupil = 32;
 rIris = 100;         % Must not be smaller than rPupil
-center = [180,162];
+
+
+rmin = 30;
+rmax = 70;
+
+[x, y] = GetPupilLocation(A);
+centermax = cedgefinder(x,y,rmin,rmax,A);
+x = centermax(1);
+y = centermax(2);
+rPupil = centermax(3);
+[x,y,rIris] = iris(A,x,y,rPupil);
+
+center = [y,x];
+
 maxDev = 3;
 angularBuffer = 0.15;
 
@@ -38,3 +52,6 @@ plot(xPupil,yPupil,'b')
 plot(xIris,yIris,'g')
 hold off
 
+drawnow
+pause(0.5)
+end

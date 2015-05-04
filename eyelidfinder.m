@@ -12,6 +12,9 @@ dR = 0.1;
 rSweep = (rPupil + (rIris - rPupil)/2): dR : rIris;
 
 
+nPad = 50;
+ImPadded = imAdd(Im,nPad);
+
 intensity = zeros(1,length(phiSweep));
 badPhi = intensity; % Just to get the same size and all zeros
 
@@ -24,7 +27,7 @@ for i = 1:length(phiSweep)
         x = round(x);
         y = round(y);
         
-        intensity(i) = intensity(i) + Im(y,x);
+        intensity(i) = intensity(i) + ImPadded(y+nPad,x);
     end
     
     intensity(i) = intensity(i) / j;
@@ -46,11 +49,11 @@ end
 
 rSweep = rPupil : rIris;
 
-mask = zeros(size(Im));
+mask = zeros(size(ImPadded));
 for i = 1:length(phiSweep)
     for j = 1:length(rSweep)
         x = xCenter + rSweep(j)*cos(phiSweep(i));
-        y = yCenter + rSweep(j)*sin(phiSweep(i));
+        y = yCenter + rSweep(j)*sin(phiSweep(i)) + nPad;
         
         x = round(x);
         y = round(y);
@@ -61,6 +64,8 @@ for i = 1:length(phiSweep)
         
     end
 end
+
+mask = mask(nPad+1:end-nPad,:);
 
 end
 
