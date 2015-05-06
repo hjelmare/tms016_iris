@@ -3,7 +3,7 @@ clear;
 clc;
 
 %Fetching image and processing
-B = importdata('S1249R02.jpg');
+B = importdata('eye2.jpg');
 A = B;
 A = im2double(A);
 
@@ -19,11 +19,21 @@ rmin = 30;
 
 %Finding pupil inside search area
 centermax = cedgefinder(x,y,rmin,rmax,A);
+xCenter_p = centermax(1);
+yCenter_p = centermax(2);
+r_p = centermax(3);
 
 %Plotting found circle
-plotcircle(centermax(1),centermax(2),centermax(3));
+plotcircle(xCenter_p, yCenter_p, r_p);
 
-[x0,y0,r] = iris(A,centermax(1),centermax(2),centermax(3));
+[xCenter_s, yCenter_s, r_s] = iris(A, xCenter_p, yCenter_p, r_p);
 
-plotcircle(x0,y0,r)
+plotcircle(xCenter_s, yCenter_s, r_s)
+
+
+
+%-----------------------unwrapping of iris-------------------------------
+uImage = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], [100 300]);
+figure(2)
+imshow(uImage)
 
