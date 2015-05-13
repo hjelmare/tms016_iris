@@ -1,6 +1,6 @@
 function [x0,y0,r] = iris(Im,pupilX,pupilY,pupilr)
 
-search = 5; %radius of search cube around pupil center
+search = 15; %radius of search cube around pupil center
 add = 50; %Number of pixels added in top and bottom
 [ylength,~] = size(Im); 
 

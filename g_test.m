@@ -13,10 +13,6 @@ fFile = [iris_path files(iFile).name];
 A = imread(fFile);
 A = im2double(A);
 
-rPupil = 32;
-rIris = 100;         % Must not be smaller than rPupil
-
-
 rmin = 30;
 rmax = 70;
 
@@ -53,5 +49,5 @@ plot(xIris,yIris,'g')
 hold off
 
 drawnow
-pause(0.5)
+pause()
 end
