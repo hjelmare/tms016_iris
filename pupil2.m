@@ -3,7 +3,8 @@ clear;
 clc;
 
 %Fetching image and processing
-B = importdata('eye2.jpg');
+fileName = 'eyeSmallPupil';
+B = importdata([fileName '.jpg']);
 A = B;
 A = im2double(A);
 
@@ -36,4 +37,42 @@ plotcircle(xCenter_s, yCenter_s, r_s)
 uImage = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], [100 300]);
 figure(2)
 imshow(uImage)
+
+alpha = [pi pi/100 pi/20 pi/5];
+beta = alpha;
+omega = 3./beta;
+
+% %for i = 1:length(alpha)
+% %    for j = 1:length(beta)
+%         waveletParams = [alpha; beta; omega];
+%         position = [uImage(1,1) uImage(1,2)];
+%         [ReH, ImH] = WaveletIntegral(waveletParams, position, uImage)
+% %    end
+% %end
+
+%%
+im = uImage;
+nscale = 1;
+minWaveLength = pi/20;
+mult = 2;
+sigmaOnf = 10;
+
+[E0, filtersum] = gaborconvolve(im, nscale, minWaveLength, mult, sigmaOnf);
+
+E1 = E0{1};
+%Phase quantisation
+H1 = real(E1) > 0;
+H2 = imag(E1) > 0;
+
+[lengthIm, hightIm] = size(E1);
+template = zeros(lengthIm*2, hightIm);
+for i = 1:2:hightIm
+    template(1:lengthIm, i) = H1(:,i);
+    template(lengthIm+1:end ,i) = H2(:,i);
+end
+
+figure(3)
+imshow(template)
+
+save(['irisTemplates/' fileName], 'template')
 
