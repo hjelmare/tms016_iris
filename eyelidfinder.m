@@ -13,7 +13,7 @@ rSweep = (rPupil + (rIris - rPupil)/2): dR : rIris;
 
 
 nPad = 50;
-ImPadded = imAdd(Im,nPad);
+ImPadded = [ones(nPad,size(Im,2)) ; Im ; ones(nPad,size(Im,2))];
 
 intensity = zeros(1,length(phiSweep));
 badPhi = intensity; % Just to get the same size and all zeros
