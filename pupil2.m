@@ -33,9 +33,9 @@ plotcircle(xCenter_s, yCenter_s, r_s)
 center_distance = sqrt((xCenter_p-xCenter_s)^2 + (yCenter_p-yCenter_s)^2);
 
 if center_distance < 10
-    [top_edge,bot_edge] = eyelid(A,xCenter_p,yCenter_p,r_p,r_s);
-    plot(top_edge(:,1),top_edge(:,2),'r');
-    plot(bot_edge(:,1),bot_edge(:,2),'r');
+    lid = eyelid(A,xCenter_p,yCenter_p,r_p,r_s);
+    plot(lid(:,1),'b')
+    plot(lid(:,2),'r') 
 else
     error('BAD SPECIMEN/TEST')
 end
@@ -43,9 +43,12 @@ end
 
 
 %-----------------------unwrapping of iris-------------------------------
-uImage = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], [100 300]);
+[uImage, mask] = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], [100 300], lid);
 figure(2)
+subplot(2,1,1)
 imshow(uImage)
+subplot(2,1,2)
+imshow(mask)
 
 alpha = [pi pi/100 pi/20 pi/5];
 beta = alpha;

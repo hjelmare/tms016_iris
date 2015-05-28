@@ -1,8 +1,9 @@
-function [ imUnwrapped ] = unwrap( im, rMin, rMax, pCenter, sCenter, res )
+function [imUnwrapped, mask] = unwrap( im, rMin, rMax, pCenter, sCenter, res , lid )
 %UNWRAP Makes rectangular iris image
 %   center is a row vector [y, x].
 %   res is a rowvector containing the resolution in radius and theta step
     %[r, theta]
+%   Lid is a image-height by 2 vector containing lid boundary
 %   imUnwrapped is a 2D matrix with the unwrapped iris [radius, phi]
 
 
@@ -10,6 +11,7 @@ rRes = res(1);
 phiRes = res(2);
 
 imUnwrapped = zeros(rRes, phiRes);
+mask = ones(rRes, phiRes);
 
 
 %Extends the image and corrects the y-values
@@ -28,7 +30,7 @@ for iRadius = 1:rRes
         r = iRadius * rStep;
 
         [x, y] = centerCorrection(pCenter, sCenter, rMin, rMax, r, phi);
-
+        mask(iRadius, iPhi) = (lid(x,2) > y);
         imUnwrapped(iRadius, iPhi) = im(y,x);
     end
 end
