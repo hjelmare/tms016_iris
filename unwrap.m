@@ -17,6 +17,7 @@ mask = ones(rRes, phiRes);
 %Extends the image and corrects the y-values
 nPad = 50;
 im = imAdd(im, nPad);
+lid = lid + 50;
 pCenter(2) = pCenter(2) + nPad;
 sCenter(2) = sCenter(2) + nPad;
 
@@ -30,7 +31,7 @@ for iRadius = 1:rRes
         r = iRadius * rStep;
 
         [x, y] = centerCorrection(pCenter, sCenter, rMin, rMax, r, phi);
-        mask(iRadius, iPhi) = (lid(x,2) > y);
+        mask(iRadius, iPhi) = (lid(x,2) > y & lid(x,1) < y);
         imUnwrapped(iRadius, iPhi) = im(y,x);
     end
 end
