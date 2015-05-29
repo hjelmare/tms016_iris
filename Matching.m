@@ -16,7 +16,7 @@ template2 = file2{1};
 mask1 = file1{2};
 mask2 = file2{2};
 mask = mask1 + mask2;
-mask = (mask == 2);
+mask = (mask == 2 | mask == 1);
 mask = [mask; mask]; %to match re and im part
 
 %Check that the two images is saved in the same format:
