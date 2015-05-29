@@ -44,6 +44,7 @@ end
 
 %-----------------------unwrapping of iris-------------------------------
 [uImage, mask] = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], [100 300], lid);
+mask = eyelash(uImage,mask);
 figure(2)
 subplot(2,1,1)
 imshow(uImage)
