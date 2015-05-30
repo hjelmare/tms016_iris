@@ -2,7 +2,7 @@ clc
 clear all
 
 %Load iris code files
-files = dir('irisTemplates/goodEyes/');
+files = dir('irisTemplates/testParameter/');
 files = files(3:end); %Removing first two wrong inputs
 
 %Checking nbr of files
@@ -14,7 +14,7 @@ result = zeros(nbrFiles*(nbrFiles-1),2);
 tic
 for i = 1:nbrFiles
     %filename{i} = importdata(sprintf('irisTemplates/goodEyes/%s',files(i).name));
-    filename{i} = load(sprintf('irisTemplates/goodEyes/%s',files(i).name));
+    filename{i} = load(sprintf('irisTemplates/testParameter/%s',files(i).name));
 end
 toc
 
@@ -24,13 +24,13 @@ tic
 for i = 1:nbrFiles
 
 %for i = 1:2
-   fileI = filename{i}.templateAndMask;
+   fileI = filename{i};
    for j = 1:nbrFiles-1
       
       %Creating interval where i is not icluded
       jfile = [1:(i-1), (i+1):nbrFiles];
        
-      fileJ = filename{jfile(j)}.templateAndMask;
+      fileJ = filename{jfile(j)};
       
       %Checking match  
       matchRatio = Matching(fileI, fileJ);
