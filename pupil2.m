@@ -6,6 +6,9 @@ iris_path = 'goodEyes/';
 files = dir(iris_path);
 [nbrOfFiles, ~] = size(files);
 
+%kör hälften av filerna
+nbrOfFiles = round(nbrOfFiles/2);
+
 for iFile = 3:nbrOfFiles
     close all
     
@@ -52,20 +55,20 @@ for iFile = 3:nbrOfFiles
     
     %-----------------------unwrapping of iris-------------------------------
     [uImage, mask] = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], [100 300], lid);
-    figure(2)
-    subplot(2,1,1)
-    imshow(uImage)
-    subplot(2,1,2)
-    imshow(mask)
+    %figure(2)
+    %subplot(2,1,1)
+    %imshow(uImage)
+    %subplot(2,1,2)
+    %imshow(mask)
     
-    alpha = [pi pi/100 pi/20 pi/5];
-    beta = alpha;
-    omega = 3./beta;
+    %alpha = [pi pi/100 pi/20 pi/5];
+    %beta = alpha;
+    %omega = 3./beta;
     
     
     im = uImage;
-    nscale = 3;
-    minWaveLength = 3;
+    nscale =1;
+    minWaveLength = 20;
     mult = 2;
     sigmaOnf = 10;
     
@@ -87,7 +90,10 @@ for iFile = 3:nbrOfFiles
     figure(3)
     imshow(template)
     
+    
+    
     fileName = [fileName(1:end-3) 'mat'];
-    save(['irisTemplates/' fileName], 'template')
+    save(['irisTemplates/testParameter/' fileName(10:end)], 'template', 'mask')
+    
     
 end
