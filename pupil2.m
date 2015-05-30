@@ -67,10 +67,10 @@ for iFile = 3:nbrOfFiles
     
     
     im = uImage;
-    nscale =1;
-    minWaveLength = 20;
+    nscale =6;
+    minWaveLength = 6;
     mult = 2;
-    sigmaOnf = 10;
+    sigmaOnf = 0.65;
     
     [E0, filtersum] = gaborconvolve(im, nscale, minWaveLength, mult, sigmaOnf);
     
@@ -81,7 +81,7 @@ for iFile = 3:nbrOfFiles
     
     template = [H1;H2];
     for i = 2:nscale
-        E = E0(i);
+        E = E0{i};
         H1 = real(E) > 0;
         H2 = imag(E) > 0;
         template = [template; H1; H2];

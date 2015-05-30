@@ -38,15 +38,19 @@ template1(mask == 0) = 1; %If a=positive & b=0: xor(a,b) = 1
 template2(mask == 0) = 0;
 
 
-nbrMatches = zeros(nbrTemplateCols, 1);
+%nbrMatches = zeros(nbrTemplateCols, 1);
 
 % for i = 1:nbrTemplateCols
 %     compared = xor([template1(:,i:end), template1(:,1:i-1)], [template2(:,i:end), template2(:,1:i-1)]);
 %     nbrMatches(i) = sum(sum(compared == 0));
 % end
-for i=1:nbrTemplateCols  
-    compared = xor(circshift(template1, [0,i]), template2);
-    nbrMatches(i) = sum(sum(compared == 0));
+
+shift = 5;
+for i=-shift:shift
+     compared = xor(circshift(template1, [0,i]), template2);
+     nbrMatches(i+shift+1) = sum(sum(compared == 0));
+%        compared = xor(template1, template2);
+%    nbrMatches = sum(sum(compared == 0));
 end
 
 maxMatch = max(nbrMatches)/nbrOfPoints; %OBS rätta till denna beroende på hur många pixlar som är tillåtna

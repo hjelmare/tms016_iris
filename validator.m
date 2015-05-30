@@ -50,8 +50,16 @@ toc
 same = result((result(:,2) > 0),2);
 notsame = result((result(:,1) > 0),1);
 subplot(2,1,1)
-hist(same)
+hist(same,50)
+axis([0.4 0.9 0 15])
 title('same')
 subplot(2,1,2)
-hist(notsame)
-tisle('not same')
+hist(notsame,50)
+axis([0.4 0.9 0 40])
+title('not same')
+
+%%
+threshhold = 0.65
+sameCorrect = sum(same>threshhold)/length(same)
+notSameCorrect = sum(notsame<threshhold)/length(notsame)
+
