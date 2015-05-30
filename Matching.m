@@ -13,21 +13,19 @@ template1 = file1{1};
 template2 = file2{1};
 
 %Join masks
-mask1 = file1{2};
-mask2 = file2{2};
-mask = mask1 + mask2;
-mask = (mask == 2 | mask == 1);
+mask = file1{2} + file2{2};
+mask = (mask==2);
 mask = [mask; mask]; %to match re and im part
 
 %Check that the two images is saved in the same format:
-if size(mask1) ~= size(mask2)
-    error('The two images have been saved in different fomrats.')
-end
+%if size(mask1) ~= size(mask2)
+%    error('The two images have been saved in different fomrats.')
+%end
 
 %Calculate nbr of points that are compared
-[nbrMaskRows, ~] = size(mask1);
+[nbrMaskRows, ~] = size(mask);
 [nbrTemplateRows, nbrTemplateCols] = size(template1);
-scale = nbrTemplateRows/(nbrMaskRows*2); %*2 since im and real part
+scale = nbrTemplateRows/(nbrMaskRows); %*2 since im and real part
 nbrOfPoints = sum(sum(mask))*scale;
 
 %Set the useless pixels (according to the mask) to different values in the
@@ -40,17 +38,14 @@ template1(mask == 0) = 1; %If a=positive & b=0: xor(a,b) = 1
 template2(mask == 0) = 0;
 
 
-
-if (size(template1) ~= size(template2))
-    error('The templates of the two images are not of the same size!!');
-end
-
-
-
 nbrMatches = zeros(nbrTemplateCols, 1);
 
-for i = 1:nbrTemplateCols
-    compared = xor([template1(:,i:end), template1(:,1:i-1)], [template2(:,i:end), template2(:,1:i-1)]);
+% for i = 1:nbrTemplateCols
+%     compared = xor([template1(:,i:end), template1(:,1:i-1)], [template2(:,i:end), template2(:,1:i-1)]);
+%     nbrMatches(i) = sum(sum(compared == 0));
+% end
+for i=1:nbrTemplateCols  
+    compared = xor(circshift(template1, [0,i]), template2);
     nbrMatches(i) = sum(sum(compared == 0));
 end
 
