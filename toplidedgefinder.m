@@ -1,4 +1,7 @@
-function [edge_coord] = lidedgefinder(pX0,ymin,ymax,rIris,Im)
+function [edge_coord,info] = toplidedgefinder(pX0,ymin,ymax,rIris,Im)
+
+%Starting of info variable at 0 = everything well
+info = 0;
 
 %Declaration of variables
 nbr_points = 150;         %Number of points in circle
@@ -66,7 +69,7 @@ for iAngle = 1:nbr_angle_steps
 
     %Finding highest ddr
     [~,ynum] = max(ddr);
-
+ 
     %Saving point if it is highest and not within 5pixels from pupil
     if ynum < (ymax-ymin - 5) 
         angle = minangle + anglestep*(iAngle-1);
@@ -74,6 +77,11 @@ for iAngle = 1:nbr_angle_steps
     end 
 end
 
+if isempty(y_ang)
+   info = 1;
+   edge_coord = [1,0];
+   return
+end
 
 %Recreating the best arc from every angle
 ry = rIris;

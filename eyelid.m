@@ -1,4 +1,4 @@
-function lid = eyelid(Im,pupilX,pupilY,rPupil,rIris)
+function [lid,info] = eyelid(Im,pupilX,pupilY,rPupil,rIris)
 
 %Finding width of image
 [height,width] = size(Im);
@@ -9,12 +9,12 @@ add = 50; %Number of pixels added in top and bottom
 Im = imAdd(Im,add);
 
 %Defining search area top and finding edge
-ymin = pupilY + add;
+ymin = pupilY + add - 10;
 ymax = pupilY + (rIris - rPupil) + add;
-[top_edge] = toplidedgefinder(pupilX,ymin,ymax,rIris,Im);
+[top_edge,info] = toplidedgefinder(pupilX,ymin,ymax,rIris,Im);
 
 %Defining search area bottom and finding edge
-ymin = pupilY - (rIris-rPupil) + add +5;
+ymin = pupilY - (rIris-rPupil) + add + 5;
 ymax = pupilY + add;
 [bot_edge] = botlidedgefinder(pupilX,ymin,ymax,rIris,Im);
 
