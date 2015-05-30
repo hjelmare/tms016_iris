@@ -27,9 +27,9 @@ for iFile = 3:nbrOfFiles
     A = im2double(A);
     
     %Plotting image
-    figure
-    imshow(B);
-    hold on
+    %figure
+    %imshow(B);
+    %hold on
     
     %Circle parameters
     rmax = 70;
@@ -41,19 +41,23 @@ for iFile = 3:nbrOfFiles
     xCenter_p = centermax(1);
     yCenter_p = centermax(2);
     r_p = centermax(3);
-    plotcircle(xCenter_p, yCenter_p, r_p);
+    %plotcircle(xCenter_p, yCenter_p, r_p);
     
     %Finding Iris
     [xCenter_s, yCenter_s, r_s] = iris(A, xCenter_p, yCenter_p, r_p);
-    plotcircle(xCenter_s, yCenter_s, r_s)
+    %plotcircle(xCenter_s, yCenter_s, r_s)
     
     %Checking if valid (more or less concentric)
     center_distance = sqrt((xCenter_p-xCenter_s)^2 + (yCenter_p-yCenter_s)^2);
     
     if center_distance < 10
-        lid = eyelid(A,xCenter_p,yCenter_p,r_p,r_s);
-        plot(lid(:,1),'b')
-        plot(lid(:,2),'r')
+        [lid,info] = eyelid(A,xCenter_p,yCenter_p,r_p,r_s);
+        %plot(lid(:,1),'b')
+        %plot(lid(:,2),'r')
+        if(info)
+           disp('BAD SPECIMEN/TEST')
+           continue
+        end
     else
         %error('BAD SPECIMEN/TEST')
         disp('BAD SPECIMEN/TEST')
@@ -77,12 +81,13 @@ for iFile = 3:nbrOfFiles
         template = [template; H1; H2];
     end
     
-    figure(3)
-    imshow(template)
+    %figure(3)
+    %imshow(template)
     
     
     
     fileName = [fileName(1:end-3) 'mat']
     save([outputPath fileName(end-11:end)], 'template', 'mask')
     
+    fprintf('%d of %d done\n', iFile, nbrOfFiles);
 end
