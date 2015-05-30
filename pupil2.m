@@ -2,17 +2,26 @@ close all;
 clear;
 clc;
 
-iris_path = 'goodEyes/';
-files = dir(iris_path);
-[nbrOfFiles, ~] = size(files);
+imagePath = '../eyeSets/goodEyes/';
+outputPath = '../irisTemplates/testParameter/';
 
-%kör hälften av filerna
-nbrOfFiles = round(nbrOfFiles/2);
+unwrapRes = [70 200];
+
+% 3 6 1.7 0.65 is fairly good
+nscale = 3;
+minWaveLength = 5;
+mult = 1.4;
+sigmaOnf = 0.65;
+    
+
+
+files = dir(imagePath);
+[nbrOfFiles, ~] = size(files);
 
 for iFile = 3:nbrOfFiles
     close all
     
-    fileName = [iris_path files(iFile).name];
+    fileName = [imagePath files(iFile).name]
     B = importdata(fileName);
     A = B;
     A = im2double(A);
@@ -51,28 +60,9 @@ for iFile = 3:nbrOfFiles
         continue
     end
     
+    [uImage, mask] = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], unwrapRes, lid);
     
-    
-    %-----------------------unwrapping of iris-------------------------------
-    [uImage, mask] = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], [100 300], lid);
-    %figure(2)
-    %subplot(2,1,1)
-    %imshow(uImage)
-    %subplot(2,1,2)
-    %imshow(mask)
-    
-    %alpha = [pi pi/100 pi/20 pi/5];
-    %beta = alpha;
-    %omega = 3./beta;
-    
-    
-    im = uImage;
-    nscale =6;
-    minWaveLength = 6;
-    mult = 2;
-    sigmaOnf = 0.65;
-    
-    [E0, filtersum] = gaborconvolve(im, nscale, minWaveLength, mult, sigmaOnf);
+    [E0, filtersum] = gaborconvolve(uImage, nscale, minWaveLength, mult, sigmaOnf);
     
     E = E0{1};
     %Phase quantisation
@@ -92,8 +82,7 @@ for iFile = 3:nbrOfFiles
     
     
     
-    fileName = [fileName(1:end-3) 'mat'];
-    save(['irisTemplates/testParameter/' fileName(10:end)], 'template', 'mask')
-    
+    fileName = [fileName(1:end-3) 'mat']
+    save([outputPath fileName(end-11:end)], 'template', 'mask')
     
 end
