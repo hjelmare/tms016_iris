@@ -9,11 +9,11 @@ function [ maxMatch ] = Matching( file1, file2)
 %(t.ex. pga ögonlock).
 
 %Extract data
-template1 = file1{1};
-template2 = file2{1};
+template1 = file1.template;
+template2 = file2.template;
 
 %Join masks
-mask = file1{2} + file2{2};
+mask = file1.mask + file2.mask;
 mask = (mask==2);
 mask = [mask; mask]; %to match re and im part
 
