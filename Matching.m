@@ -15,6 +15,7 @@ template2 = file2.template;
 %Join masks
 mask = file1.mask + file2.mask;
 mask = (mask==2);
+%Test how many pixels that are useful
 mask = [mask; mask]; %to match re and im part
 
 %Check that the two images is saved in the same format:
@@ -23,10 +24,16 @@ mask = [mask; mask]; %to match re and im part
 %end
 
 %Calculate nbr of points that are compared
-[nbrMaskRows, ~] = size(mask);
+[nbrMaskRows, nbrMaskCols] = size(mask);
 [nbrTemplateRows, nbrTemplateCols] = size(template1);
 scale = nbrTemplateRows/(nbrMaskRows); %*2 since im and real part
 nbrOfPoints = sum(sum(mask))*scale;
+
+%sum(sum(mask))/(nbrMaskRows*nbrMaskCols)
+if (sum(sum(mask))/(nbrMaskRows*nbrMaskCols) < 0.6)
+    maxMatch =0;
+    return
+end
 
 %Set the useless pixels (according to the mask) to different values in the
 %two templates so that they can't match.

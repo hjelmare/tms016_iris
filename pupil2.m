@@ -11,9 +11,11 @@ files = dir(iris_path);
 
 
 for iFile = 3:nbrOfFiles
+%for iFile = 1:1
     close all
     
     fileName = [iris_path files(iFile).name];
+    %fileName = [iris_path 'S1109L01.jpg'];
     B = importdata(fileName);
     A = B;
     A = im2double(A);
@@ -60,16 +62,14 @@ for iFile = 3:nbrOfFiles
     
     %-----------------------unwrapping of iris-------------------------------
     [uImage, mask] = unwrap(A, r_p, r_s, [xCenter_p, yCenter_p], [xCenter_s, yCenter_s], [70 200], lid);
+   
+    
+    mask = eyelash(uImage, mask);
     %figure(2)
     %subplot(2,1,1)
     %imshow(uImage)
     %subplot(2,1,2)
     %imshow(mask)
-    
-    %alpha = [pi pi/100 pi/20 pi/5];
-    %beta = alpha;
-    %omega = 3./beta;
-    
     
     im = uImage;
     nscale =6;
@@ -78,6 +78,7 @@ for iFile = 3:nbrOfFiles
     sigmaOnf = 0.65;
     
     [E0, filtersum] = gaborconvolve(im, nscale, minWaveLength, mult, sigmaOnf);
+    
     
     E = E0{1};
     %Phase quantisation
@@ -96,9 +97,8 @@ for iFile = 3:nbrOfFiles
     %imshow(template)
     
     
-    
     fileName = [fileName(1:end-3) 'mat'];
-    save(['irisTemplates/testParameter/' fileName(13:end)], 'template', 'mask')
+    save(['irisTemplates/randomEyes/' fileName(13:end)], 'template', 'mask')
     
     fprintf('%d of %d done\n', iFile, nbrOfFiles);
 end
