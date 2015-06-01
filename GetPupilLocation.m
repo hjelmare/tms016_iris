@@ -16,9 +16,9 @@ I = im2double(Image);
 [nbrOfRow, nbrOfCol] = size(I);
 
 I_mod = I;
-I_mod(I_mod < 0.4) = 0;
+I_mod(I_mod < 0.25) = 0;
 
-
+%imshow(I_mod);
 boxLength = 70;
 rowStart = boxLength;
 colStart = boxLength;
@@ -35,7 +35,6 @@ for iRow = boxLength:boxLength/2:nbrOfRow-boxLength
         
     end
 end
-
 
 
 I_mod(I_mod > 0.97) = 0;
